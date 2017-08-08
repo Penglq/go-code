@@ -1,0 +1,11 @@
+buildscript {
+    dependencies {
+        classpath files('/Users/luqiangpeng/soft/gogradle-0.6.5-all.jar')
+    }
+}
+
+apply plugin: 'com.github.blindpirate.gogradle'
+
+golang {
+    packagePath = 'stringCombineTest' // 欲构建项目的go import path，注意不是本地目录的路径！
+}
