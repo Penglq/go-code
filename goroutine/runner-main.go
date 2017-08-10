@@ -3,8 +3,8 @@ package main
 import (
 	"go-code/goroutine/runner"
 	"log"
-	"time"
 	"os"
+	"time"
 )
 
 const timeout = 1 * time.Second
@@ -14,7 +14,7 @@ func main() {
 
 	r := runner.New(timeout)
 
-	r.Add(createTask(),createTask())
+	r.Add(createTask(), createTask())
 
 	if err := r.Start(); err != nil {
 		switch err {

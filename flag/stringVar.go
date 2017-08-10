@@ -11,4 +11,5 @@ func main() {
 	flag.StringVar(&s, "name", "12", "注释")
 	flag.Parse()
 	log.Print(s)
+	log.Print(77777)
 }
