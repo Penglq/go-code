@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
-	"log"
 )
 
 //func main() {

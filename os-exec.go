@@ -1,11 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"log"
-	"os/exec"
-)
-
 //func main() {
 //	cmd := exec.Command("ls", "-lah")
 //	out, err := cmd.CombinedOutput()

@@ -2,8 +2,6 @@ package main
 
 import (
 	"go-code/gotest/stringCombineTest"
-	"log"
-	"time"
 )
 
 type Testtest interface {

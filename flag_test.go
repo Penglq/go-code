@@ -12,6 +12,7 @@ func Test_Flag(t *testing.T) {
 	flag.Parse()
 	println(*strFlag, *boolFlag)
 }
+
 //func main() {
 //
 //}

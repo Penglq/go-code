@@ -5,7 +5,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"sync"
 )
 
 func GoID() int {
@@ -18,6 +17,7 @@ func GoID() int {
 	}
 	return id
 }
+
 //func main() {
 //	fmt.Println("main", GoID())
 //	var wg sync.WaitGroup
