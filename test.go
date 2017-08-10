@@ -37,32 +37,32 @@ func tests(s []string, n int, t Testtest) {
 	}
 }
 
-func main() {
-	strs := []string{
-		"one",
-		"two",
-		"three",
-		"four",
-		"five",
-		"six",
-		"seven",
-		"eight",
-		"nine",
-		"ten",
-	}
-
-	n := 10000000
-
-	start1 := time.Now()
-	tests(strs, n, strJoin{})
-	log.Print("join时间", time.Since(start1))
-
-	start2 := time.Now()
-	tests(strs, n, strString{})
-	log.Print("+时间", time.Since(start2))
-
-	start3 := time.Now()
-	tests(strs, n, strButter{})
-	log.Print("buffer时间", time.Since(start3))
-
-}
+//func main() {
+//	strs := []string{
+//		"one",
+//		"two",
+//		"three",
+//		"four",
+//		"five",
+//		"six",
+//		"seven",
+//		"eight",
+//		"nine",
+//		"ten",
+//	}
+//
+//	n := 10000000
+//
+//	start1 := time.Now()
+//	tests(strs, n, strJoin{})
+//	log.Print("join时间", time.Since(start1))
+//
+//	start2 := time.Now()
+//	tests(strs, n, strString{})
+//	log.Print("+时间", time.Since(start2))
+//
+//	start3 := time.Now()
+//	tests(strs, n, strButter{})
+//	log.Print("buffer时间", time.Since(start3))
+//
+//}

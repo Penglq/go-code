@@ -66,7 +66,7 @@ func (a AnyOf) Satisfy(c rune) bool {
 	}
 	return false
 }
-func main() {
-	log.Print(ForAll("ab12", IsNot{Equals{'1'}}))
-	log.Print(Exists("ab12", AnyOf{[]CharSpec{Equals{'g'}, Equals{'a'}}}))
-}
+//func main() {
+//	log.Print(ForAll("ab12", IsNot{Equals{'1'}}))
+//	log.Print(Exists("ab12", AnyOf{[]CharSpec{Equals{'g'}, Equals{'a'}}}))
+//}

@@ -10,9 +10,9 @@ func intSeq ()func()int{
 	}
 }
 
-func main() {
-	initNext := intSeq()
-	fmt.Println(initNext())
-	fmt.Println(initNext())
-	fmt.Println(intSeq())
-}
+//func main() {
+//	initNext := intSeq()
+//	fmt.Println(initNext())
+//	fmt.Println(initNext())
+//	fmt.Println(intSeq())
+//}
