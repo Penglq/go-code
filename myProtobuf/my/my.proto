@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package my;
+
+message TestString {
+  string s = 2;
+}
+
+message TestInt {
+  int32 s = 1;
+}
+
+message TestSInt {
+  sint32 s = 1;
+}
+
+message TestFixed32{
+  fixed32 s = 1;
+}
+
+message Test {
+  string label = 1;
+  int32 type = 2;
+  repeated int64 reps = 3;
+  string requiredField = 5;
+}

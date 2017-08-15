@@ -7,6 +7,7 @@ import (
 
 	"log"
 	"time"
+	"container/list"
 )
 
 func sort() ([]byte, error) {
@@ -39,6 +40,7 @@ func sort() ([]byte, error) {
 }
 
 func main() {
+
 	for {
 		go func() {
 			s, err := sort()
