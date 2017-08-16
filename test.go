@@ -1,10 +1,12 @@
 package main
 
-import "log"
+import (
+	"log"
+	"unsafe"
+)
 
 func main() {
-	var a int = 11
-	b := a - 4
+	s := new([]int64)
 
-	log.Print(b)
+	log.Println(unsafe.Sizeof(s))
 }
