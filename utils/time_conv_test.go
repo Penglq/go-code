@@ -31,7 +31,7 @@ var _ = Describe("TimeConv", func() {
 				Expect(GetDateTimeFromTime(timestamp[0])).To(Equal(want[0]))
 			})
 
-			Expect(runtime.Seconds()).To(BeNumerically("<", 0), "shouldn't take too long.")
+			Expect(runtime.Seconds()).To(BeNumerically("<", 0.2), "shouldn't take too long.")
 
 			Ω(runtime.Seconds()).Should(BeNumerically("<", 0.2), "shouldn't take too long.")
 
