@@ -9,6 +9,11 @@ var (
 	TimeLocation, _ = time.LoadLocation("Asia/Chongqing") //当地时间
 )
 
+// 获取当天日期加上时分秒，默认00:00:00
+func GetNowDate() string {
+	return time.Now().Format("2006-01-02 00:00:00")
+}
+
 func GetDateFromTime(t int64) string {
 	if t > 0 {
 		if t/1e9 >= 1000 {
@@ -34,6 +39,11 @@ func GetDateTimeFromTime(t int64) string {
 	}
 	//loc, _ := time.LoadLocation("UTC")
 
+}
+
+func GetMillisecondTime(date string) int64 {
+	tm, _ := time.Parse("2006-01-02 15:04:05", date)
+	return tm.UnixNano() / 1e6
 }
 
 // GetNowDateTime default layout 2006-01-02 15:04:05
