@@ -157,9 +157,9 @@ func google_com_sl(value string) string { //google.com收录数量
 
 //===============================
 func main() {
-	fmt.Printf("=baidu===%v====\n", baidu_sl("www.liveinline.com"))           //百度收录数量
-	fmt.Printf("=s360===%v====\n", s360_sl("www.liveinline.com"))             //360收录数量
-	fmt.Printf("=sogou===%v====\n", sogou_sl("www.liveinline.com"))           //sogou收录数量
-	fmt.Printf("=bing===%v====\n", bing_sl("liveinline.com"))                 //bing收录数量
-	fmt.Printf("=google_com===%v====\n", google_com_sl("www.liveinline.com")) //google.com收录数量
+	fmt.Printf("=baidu===%v====\n", baidu_sl("www.iphpt.com"))           //百度收录数量
+	fmt.Printf("=s360===%v====\n", s360_sl("www.iphpt.com"))             //360收录数量
+	fmt.Printf("=sogou===%v====\n", sogou_sl("www.iphpt.com"))           //sogou收录数量
+	fmt.Printf("=bing===%v====\n", bing_sl("iphpt.com"))                 //bing收录数量
+	fmt.Printf("=google_com===%v====\n", google_com_sl("www.iphpt.com")) //google.com收录数量
 }

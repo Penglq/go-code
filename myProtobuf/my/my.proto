@@ -7,7 +7,7 @@ message TestString {
 }
 
 message TestInt {
-  int32 s = 1;
+  int32 s = 2;
 }
 
 message TestSInt {

@@ -1,15 +1,22 @@
 package main
 
 import (
-	"log"
 	"time"
-	"strconv"
+	"log"
 )
 
 func main() {
-	var s string
 
-	log.Println(s, strconv.FormatInt(time.Now().Unix(),10))
+	TimeLocation, _ := time.LoadLocation("Asia/Chongqing") //当地时间
+	layout := "2006-01-02 15:04:05"
 
-	log.Println(time.Unix(1504084457, 0).Format("2006-01-02 15:04:05"))
+	log.Print(time.Now().In(TimeLocation).Format(layout))
+
+	log.Print(time.Now().Unix())
+
+	test("a", "b")
+}
+
+func test(a... string)  {
+	log.Print(a[0])
 }
