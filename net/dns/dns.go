@@ -9,6 +9,7 @@ import (
 	"io"
 	"net"
 	"strings"
+	"time"
 )
 
 type Header struct {
@@ -61,7 +62,7 @@ func (q *Question) SetQName(qname string) {
 	for _, n := range strings.Split(qname, ".") {
 		binary.Write(&buf, binary.BigEndian, byte(len(n))) // 标签长度
 		binary.Write(&buf, binary.BigEndian, []byte(n))    // 标签内容
-		fmt.Println("pack qname query->", []byte(n), n)
+		//fmt.Println("pack qname query->", []byte(n), n)
 	}
 	binary.Write(&buf, binary.BigEndian, eof) // 以0x00结束
 
@@ -147,23 +148,24 @@ type rdataCNAME struct {
 func Ask(server, qname string) ([]net.IP, error) {
 	var names []net.IP
 	//
-	//reqData := Pack(TypeA, qname) // 封包
-	//// 使用官方net包进行UDP连接
-	//conn, err := net.Dial("udp", server+":53")
-	//if err != nil {
-	//	return nil, err
-	//}
-	//defer conn.Close() // 延迟处理
-	//conn.SetDeadline(time.Now().Add(time.Second * 3))
-	//// 发包
-	//if i, err := conn.Write(reqData); err != nil || i <= 0 {
-	//	return nil, err
-	//}
+	reqData := Pack(TypeA, qname) // 封包
+	// 使用官方net包进行UDP连接
+	conn, err := net.Dial("udp", server+":53")
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close() // 延迟处理
+	conn.SetDeadline(time.Now().Add(time.Second * 3))
+	// 发包
+	if i, err := conn.Write(reqData); err != nil || i <= 0 {
+		return nil, err
+	}
 	//buf := make([]byte, 4024)
 	//n, _ := conn.Read(buf)
 	//fmt.Println("read buf", buf[:n])
-	buf := []byte{0, 1, 129, 128, 0, 1, 0, 3, 0, 0, 0, 0, 3, 119, 119, 119, 5, 98, 97, 105, 100, 117, 3, 99, 111, 109, 0, 0, 1, 0, 1, 192, 12, 0, 5, 0, 1, 0, 0, 1, 253, 0, 15, 3, 119, 119, 119, 1, 97, 6, 115, 104, 105, 102, 101, 110, 192, 22, 192, 43, 0, 1, 0, 1, 0, 0, 1, 10, 0, 4, 180, 97, 33, 107, 192, 43, 0, 1, 0, 1, 0, 0, 1, 10, 0, 4, 180, 97, 33, 108}
-	answers, err := Unpack(bytes.NewReader(buf[:])) // 拆包
+	//buf := []byte{0, 1, 129, 128, 0, 1, 0, 3, 0, 0, 0, 0, 3, 119, 119, 119, 5, 98, 97, 105, 100, 117, 3, 99, 111, 109, 0, 0, 1, 0, 1, 192, 12, 0, 5, 0, 1, 0, 0, 1, 253, 0, 15, 3, 119, 119, 119, 1, 97, 6, 115, 104, 105, 102, 101, 110, 192, 22, 192, 43, 0, 1, 0, 1, 0, 0, 1, 10, 0, 4, 180, 97, 33, 107, 192, 43, 0, 1, 0, 1, 0, 0, 1, 10, 0, 4, 180, 97, 33, 108}
+	//answers, err := Unpack(bytes.NewReader(buf[:n])) // 拆包
+	answers, err := Unpack(conn) // 拆包
 	if err != nil {
 		return nil, err
 	}
@@ -201,11 +203,11 @@ func Pack(qtype uint16, qname string) []byte {
 
 	var buf bytes.Buffer
 	binary.Write(&buf, binary.BigEndian, header)
-	fmt.Println("pack header->", buf.Bytes())
-	fmt.Println("pack qname->", question.QName)
+	//fmt.Println("pack header->", buf.Bytes())
+	//fmt.Println("pack qname->", question.QName)
 	binary.Write(&buf, binary.BigEndian, question.QName)
 	binary.Write(&buf, binary.BigEndian, []uint16{question.QType, question.QClass})
-	fmt.Println("pack question->", buf.Bytes()[12:])
+	//fmt.Println("pack question->", buf.Bytes()[12:])
 
 	return buf.Bytes()
 }
@@ -232,14 +234,14 @@ func Unpack(rd io.Reader) ([]*Answer, error) {
 	binary.Read(bytes.NewReader(buf[8:10]), binary.BigEndian, &header.NSCount)
 	binary.Read(bytes.NewReader(buf[10:12]), binary.BigEndian, &header.ARCount)
 	data = append(data, buf...)
-	fmt.Println("unpack header->", header)
+	//fmt.Println("unpack header->", header)
 
 	// 拆Question
 	question := new(Question)
 	if buf, err = reader.ReadBytes(eof); err != nil { // 域名以0x00结尾
 		return nil, err
 	}
-	fmt.Println("unpack QName->", buf)
+	//fmt.Println("unpack QName->", buf)
 	data = append(data, buf...)
 	question.QName = buf
 	buf = make([]byte, 4)
@@ -254,7 +256,7 @@ func Unpack(rd io.Reader) ([]*Answer, error) {
 	binary.Read(bytes.NewBuffer(buf[0:2]), binary.BigEndian, &question.QType)
 	binary.Read(bytes.NewBuffer(buf[2:]), binary.BigEndian, &question.QClass)
 
-	fmt.Println("unpack question->", question)
+	//fmt.Println("unpack question->", question)
 
 	// 拆Answer(s)
 	answers := make([]*Answer, header.ANCount)
@@ -278,7 +280,6 @@ func Unpack(rd io.Reader) ([]*Answer, error) {
 				data = append(data, b)
 				buf[1] = b
 				binary.Read(bytes.NewBuffer(buf), binary.BigEndian, &p)
-				fmt.Println("test2----->", buf, data, p)
 				if buf = getRefData(data, p); len(buf) == 0 {
 					return nil, errors.New("invalid answer packet")
 				}
@@ -315,7 +316,7 @@ func Unpack(rd io.Reader) ([]*Answer, error) {
 		}
 
 		answers[i] = answer
-		fmt.Println("unpack answer->", answer)
+		//fmt.Println("unpack answer->", answer)
 	}
 
 	// 拆Authority和Additional，如果有的话
@@ -325,7 +326,7 @@ func Unpack(rd io.Reader) ([]*Answer, error) {
 
 func getRefData(data []byte, p uint16) []byte {
 	var refData []byte
-	fmt.Println("refdata", data)
+	//fmt.Println("refdata", data)
 	// 从初始偏移量开始对应答数据包缓存进行遍历
 	for i := int(p); i < len(data); i++ {
 		// fmt.Print(i, p, " ")
